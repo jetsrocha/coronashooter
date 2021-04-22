@@ -1,3 +1,9 @@
+@font-face {
+    font-family: monster;
+    src: url(fonts/creepster.regular.ttf);
+}
+
+
 body {
     height: 100vh;
     width: 100%;
@@ -19,20 +25,24 @@ body {
     width: 680px;
 }
 
+
 .game-instructions {
     position: relative;
-    color: black;
+    color: rgb(4, 179, 4);
     text-align: center;
     left: 1rem;
     top: 0px;
+    font-family: monster;
+    font-size: 40pt;
 }
 
 .start-button {
     position: relative;
     color: black;
-    top: 7rem;
-    left: 17rem;
+    top: 0rem;
+    left: 18.5rem;
     cursor: pointer;
+    font-family: fantasy;
 }
 
 .player-shooter {
@@ -49,9 +59,22 @@ body {
     height: 30px;
 }
 
-.alien {
-    height: 80px;
-    width: 90px;
+
+.bag {
+    height: 100px;
+    width: 190px;
+    position: relative;
+}
+
+.wallet {
+    height: 90px;
+    width: 140px;
+    position: relative;
+}
+
+.hand {
+    height: 90px;
+    width: 150px;
     position: relative;
 }
 
@@ -60,9 +83,37 @@ body {
     transition: opacity 1.5s ease-in-out;
 }
 
+.dead-bag{
+    height: 100px;
+    width: 190px;
+    position: relative;
+    opacity: 0;
+}
+
+.dead-hand{
+    height: 90px;
+    width: 150px;
+    position: relative;
+    opacity: 0;
+}
+
+.dead-wallet{
+    height: 90px;
+    width: 140px;
+    position: relative;
+    opacity: 0;
+}
+
 .dead-alien {
     height: 80px;
     width: 90px;
     position: relative;
     opacity: 0;
+}
+
+.over-text {
+    color: red;
+    text-align: center;
+    font-family: monster;
+    font-size: 30pt;
 }

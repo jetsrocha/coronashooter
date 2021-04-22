@@ -1,6 +1,6 @@
 const yourShip = document.querySelector('.player-shooter');
 const playArea = document.querySelector('#main-play-area');
-const aliensImg = ['img/monster-1.png', 'img/monster-2.png', 'img/monster-3.png'];
+const aliensImg = [ 'img/dirtybag.png', 'img/dirtywallet.png', 'img/dirtyhand.png'];
 const instructionsText = document.querySelector('.game-instructions');
 const startButton = document.querySelector('.start-button');
 let alienInterval;
@@ -68,9 +68,24 @@ function moveLaser(laser) {
 
         aliens.forEach((alien) => { //comparando se cada alien foi atingido, se sim, troca o src da imagem
             if(checkLaserCollision(laser, alien)) {
-                alien.src = 'img/explosion.png';
-                alien.classList.remove('alien');
-                alien.classList.add('dead-alien');
+                if(alien.src.includes('img/dirtybag.png')){
+                    alien.src = 'img/cleanbag.png';
+                    alien.classList.remove('alien');
+                    alien.classList.add('dead-bag');
+                }else if(alien.src.includes('img/dirtywallet.png')){
+                    alien.src = 'img/cleanwallet.png';
+                    alien.classList.remove('alien');
+                    alien.classList.add('dead-wallet');
+                }else if(alien.src.includes('img/dirtyhand.png')){
+                    alien.src = 'img/cleanhand.png';
+                    alien.classList.remove('alien');
+                    alien.classList.add('dead-hand');
+                }else{
+                    alien.src = 'img/explosion.png';
+                    alien.classList.remove('alien');
+                    alien.classList.add('dead-alien');
+                }
+                
             }
         })
 
@@ -87,9 +102,20 @@ function createAliens() {
     let newAlien = document.createElement('img');
     let alienSprite = aliensImg[Math.floor(Math.random() * aliensImg.length)]; //sorteio de imagens
     newAlien.src = alienSprite;
-    newAlien.classList.add('alien');
+    if(alienSprite == 'img/dirtybag.png') {
+        newAlien.classList.add('alien')
+        newAlien.classList.add('bag')
+    } else if(alienSprite == 'img/dirtywallet.png'){
+        newAlien.classList.add('alien')
+        newAlien.classList.add('wallet')
+    }else if(alienSprite == 'img/dirtyhand.png'){
+        newAlien.classList.add('alien')
+        newAlien.classList.add('hand')
+    }else {
+        newAlien.classList.add('alien');    
+    }
     newAlien.classList.add('alien-transition');
-    newAlien.style.left = '370px';
+    newAlien.style.left = '295px';
     newAlien.style.top = `${Math.floor(Math.random() * 330) + 30}px`;
     playArea.appendChild(newAlien);
     moveAlien(newAlien);
@@ -100,7 +126,10 @@ function moveAlien(alien) {
     let moveAlienInterval = setInterval(() => {
         let xPosition = parseInt(window.getComputedStyle(alien).getPropertyValue('left'));
         if(xPosition <= 50) {
-            if(Array.from(alien.classList).includes('dead-alien')) {
+            if(Array.from(alien.classList).includes('dead-alien') 
+                || Array.from(alien.classList).includes('dead-bag')
+                || Array.from(alien.classList).includes('dead-wallet')
+                || Array.from(alien.classList).includes('dead-hand')) {
                 alien.remove();
             } else {
                 gameOver();
@@ -120,7 +149,7 @@ function checkLaserCollision(laser, alien) {
     let alienLeft = parseInt(alien.style.left);
     let alienBottom = alienTop - 30;
     if(laserLeft != 340 && laserLeft + 40 >= alienLeft) {
-        if(laserTop <= alienTop && laserTop >= alienBottom) {
+        if(laserTop <= alienTop + 40 && laserTop >= alienBottom -50) {
             return true;
         } else {
             return false;
@@ -144,6 +173,7 @@ function playGame() {
     }, 2000);
 }
 
+
 //função de game over
 function gameOver() {
     window.removeEventListener('keydown', flyShip);
@@ -153,9 +183,10 @@ function gameOver() {
     let lasers = document.querySelectorAll('.laser');
     lasers.forEach((laser) => laser.remove());
     setTimeout(() => {
-        alert('game over!');
+        instructionsText.style.display = "block";
+        instructionsText.innerHTML = "<h1 class = 'over-text'>OPA! Descuidou?</br>Continue tentando</h1>"
         yourShip.style.top = "250px";
         startButton.style.display = "block";
-        instructionsText.style.display = "block";
+        
     });
 }
